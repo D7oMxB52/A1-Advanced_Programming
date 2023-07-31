@@ -1,17 +1,43 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        String csvFile = "posts.csv";
+        String line = "";
+        String delimiter = ",";
+        List<Posts> postsList = new ArrayList<>();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(csvFile)))) {
+            // skipping the header
+            br.readLine();
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm");
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(delimiter);
+                postsList.add(new Posts(Integer.parseInt(fields[0]), fields[1], fields[2], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), LocalDateTime.parse(fields[5], formatter)));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        // Descending order in likes
+        postsList.sort(Comparator.comparingInt(Posts::getLikes).reversed());
+        System.out.println(postsList);
+        System.out.println("==================================");
+        // Descending order in shares
+        postsList.sort(Comparator.comparingInt(Posts::getShares).reversed());
+        System.out.println(postsList);
+
     }
+
+
 }
