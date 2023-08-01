@@ -3,9 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 
 public class Main {
@@ -14,6 +12,8 @@ public class Main {
         String line = "";
         String delimiter = ",";
         List<Posts> postsList = new ArrayList<>();
+
+        Scanner input = new Scanner(System.in);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(csvFile)))) {
             // skipping the header
@@ -33,11 +33,38 @@ public class Main {
         postsList.sort(Comparator.comparingInt(Posts::getLikes).reversed());
         System.out.println(postsList);
         System.out.println("==================================");
+
+
         // Descending order in shares
         postsList.sort(Comparator.comparingInt(Posts::getShares).reversed());
         System.out.println(postsList);
+        System.out.println("==================================");
+
+
+        // Search by ID
+        System.out.println("Insert ID: ");
+        int num = input.nextInt();
+        Optional<Posts> searchById = postsList.stream().filter(post -> post.getId() == num).findFirst();
+        if (searchById.isPresent()) {
+            System.out.println("Found post with ID " + num + ": " + searchById.get());
+        } else {
+            System.out.println("No post found with ID " + num);
+        }
+        System.out.println("==================================");
+
+
+
+        // Delete
+        System.out.println("Insert ID to delete: ");
+        System.out.println(postsList);
+        boolean removed = postsList.removeIf(post -> post.getId() == num);
+        if (removed){
+            System.out.println("The post with "+ num + " ID got deleted");
+        }
+        else {
+            System.out.println("The post with "+ num + " ID does not exist");
+        }
+        System.out.println("==================================");
 
     }
-
-
 }

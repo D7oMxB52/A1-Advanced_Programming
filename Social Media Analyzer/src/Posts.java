@@ -8,6 +8,9 @@ public class Posts {
     int shares;
     LocalDateTime dateTime;
 
+    public Posts() {
+    }
+
     @Override
     public String toString() {
         return "Posts{" +
