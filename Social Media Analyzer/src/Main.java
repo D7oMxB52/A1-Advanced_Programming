@@ -12,9 +12,10 @@ public class Main {
         String line = "";
         String delimiter = ",";
         List<Posts> postsList = new ArrayList<>();
-
         Scanner input = new Scanner(System.in);
 
+
+        // reading csv file
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(csvFile)))) {
             // skipping the header
             br.readLine();
@@ -33,11 +34,13 @@ public class Main {
         postsList.sort(Comparator.comparingInt(Posts::getLikes).reversed());
         System.out.println(postsList);
         System.out.println("==================================");
+        System.out.println("==================================");
 
 
         // Descending order in shares
         postsList.sort(Comparator.comparingInt(Posts::getShares).reversed());
         System.out.println(postsList);
+        System.out.println("==================================");
         System.out.println("==================================");
 
 
@@ -50,6 +53,7 @@ public class Main {
         } else {
             System.out.println("No post found with ID " + num);
         }
+        System.out.println("==================================");
         System.out.println("==================================");
 
 
@@ -65,6 +69,22 @@ public class Main {
             System.out.println("The post with "+ num + " ID does not exist");
         }
         System.out.println("==================================");
+        System.out.println("==================================");
+        System.out.println(postsList);
+
+        // Add new post
+        Posts newPost = new Posts();
+        newPost.setId(5);
+        newPost.setAuthor("abdul");
+        newPost.setContent("hello");
+        newPost.setShares(55);
+        newPost.setLikes(555);
+        newPost.setDateTime(LocalDateTime.now());
+
+        postsList.add(newPost);
+
+        System.out.println(postsList);
+
 
     }
 }
