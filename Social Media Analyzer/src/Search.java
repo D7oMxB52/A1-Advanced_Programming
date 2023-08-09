@@ -12,9 +12,9 @@ public class Search {
 
         Optional<Posts> searchById = postsList.stream().filter(post -> post.getId() == numId).findFirst();
         if (searchById.isPresent()) {
-            System.out.println("Found post with ID " + numId + ": " + searchById.get());
+            System.out.printf("%d  |  %s  |  %d\n",searchById.get().id,searchById.get().content,searchById.get().likes);
         } else {
-            System.out.println("No post found with ID " + numId);
+            System.out.println("Sorry the post does not exist in the collection! ");
         }
 
     }

@@ -58,94 +58,99 @@ public class Main {
                         // Add new post
                         System.out.print("Please provide the post ID: ");
                         int promptedId = input.nextInt();
-                        newPost.setId(promptedId);
-
-                        System.out.print("Please provide the post content: ");
-                        String promptedAuthor = input.next();
-                        newPost.setAuthor(promptedAuthor);
+//                        newPost.setId(promptedId);
 
                         System.out.print("Please provide the post author: ");
+                        String promptedAuthor = input.next();
+//                        newPost.setAuthor(promptedAuthor);
+
+
+                        // TODO:  make it not to contain ','
+                        System.out.print("Please provide the post content: ");
                         String promptedContent = input.next();
-                        newPost.setContent(promptedContent);
+//                        newPost.setContent(promptedContent);
+                        if (promptedContent.contains(",")){
+                            System.out.println("the content contain \" , \" and adding the post has been aborted.");
+                            break;
+                        }
 
                         System.out.print("Please provide the number of likes of the post: ");
                         int promptedShares = input.nextInt();
-                        newPost.setShares(promptedShares);
+//                        newPost.setShares(promptedShares);
 
                         System.out.print("Please provide the number of shares of the post: ");
                         int promptedLikes = input.nextInt();
-                        newPost.setLikes(promptedLikes);
+//                        newPost.setLikes(promptedLikes);
 
+                        // TODO: Ask the lecturer more of how to use it.
+                        //       Also, finish it by the end of this week.
                         System.out.println("Please provide the date and time of the post in the format of DD/MM/YYYY HH:MM:");
                         newPost.setDateTime(LocalDateTime.now());
 
 
+
+                        newPost.setId(promptedId);
+                        newPost.setAuthor(promptedAuthor);
+                        newPost.setContent(promptedContent);
+                        newPost.setShares(promptedShares);
+                        newPost.setLikes(promptedLikes);
+                        newPost.setDateTime(LocalDateTime.now());
                         postsList.add(newPost);
 
-
                         System.out.println("The post has been added to the collection!");
-
-
                         break;
-
 
                     //  2) Delete an existing social media post
                     case 2:
 
-
                         // Delete
                         System.out.println("Insert ID to delete: ");
-                        int num = input.nextInt();
-                        System.out.println(postsList);
-                        boolean removed = postsList.removeIf(post -> post.getId() == num);
-                        if (removed){
-                            System.out.println("The post with "+ num + " ID got deleted");
-                        }
-                        else {
-                            System.out.println("The post with "+ num + " ID does not exist");
-                        }
-                        System.out.println(postsList);
+                        int numIdForDelete = input.nextInt();
 
+                        Delete deleteById = new Delete(numIdForDelete, postsList);
+                        deleteById.deleteById();
 
                         break;
-
 
                     //  3) Retrieve a social media post
                     case 3:
 
                         // Search by ID
                         System.out.println("Insert ID: ");
-                        int numId = input.nextInt();
+                        int numIdForSearch = input.nextInt();
 
-                        Search searchById = new Search(numId , postsList);
+                        Search searchById = new Search(numIdForSearch , postsList);
                         searchById.searchById();
-
-
-
-//                        Optional<Posts> searchById = postsList.stream().filter(post -> post.getId() == numId).findFirst();
-//                        if (searchById.isPresent()) {
-//                            System.out.println("Found post with ID " + numId + ": " + searchById.get());
-//
-//
-//                        } else {
-//                            System.out.println("No post found with ID " + numId);
-//                        }
-
 
                         break;
 
 
                     //  4) Retrieve the top N posts with most likes
                     case 4:
+
                         postsList.sort(Comparator.comparingInt(Posts::getLikes).reversed());
-                        System.out.println(postsList);
+                        for (int i = 0; i < postsList.size(); i++){
+                            System.out.printf("%d)  %d  |  %s  |  %d\n",
+                                    i+1,
+                                    postsList.get(i).id,
+                                    postsList.get(i).getContent(),
+                                    postsList.get(i).getLikes());
+                        }
+
                         break;
 
 
                     //  5) Retrieve the top N posts with most shares
                     case 5:
                         postsList.sort(Comparator.comparingInt(Posts::getShares).reversed());
-                        System.out.println(postsList);
+
+                        for (int i = 0; i < postsList.size(); i++){
+                            System.out.printf("%d)  %d  |  %s  |  %d\n",
+                                    i+1,
+                                    postsList.get(i).id,
+                                    postsList.get(i).getContent(),
+                                    postsList.get(i).getShares());
+                        }
                         break;
 
                     //  6) Exit
