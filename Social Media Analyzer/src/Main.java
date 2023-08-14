@@ -16,7 +16,6 @@ public class Main {
         boolean exit = false;
         Scanner input = new Scanner(System.in);
 
-
         // reading csv file
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(csvFile)))) {
             // skipping the header
@@ -25,7 +24,7 @@ public class Main {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm");
             while ((line = br.readLine()) != null) {
                 String[] fields = line.split(delimiter);
-                postsList.add(new Posts(Integer.parseInt(fields[0]), fields[1], fields[2], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), LocalDateTime.parse(fields[5], formatter)));
+                postsList.add(new Posts(Integer.parseInt(fields[0]), fields[1], fields[2], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), fields[5]));
             }
 
         } catch (IOException e) {
@@ -58,43 +57,48 @@ public class Main {
                         // Add new post
                         System.out.print("Please provide the post ID: ");
                         int promptedId = input.nextInt();
-//                        newPost.setId(promptedId);
 
                         System.out.print("Please provide the post author: ");
                         String promptedAuthor = input.next();
-//                        newPost.setAuthor(promptedAuthor);
 
 
-                        // TODO:  make it not to contain ','
                         System.out.print("Please provide the post content: ");
                         String promptedContent = input.next();
-//                        newPost.setContent(promptedContent);
                         if (promptedContent.contains(",")){
                             System.out.println("the content contain \" , \" and adding the post has been aborted.");
                             break;
                         }
 
-                        System.out.print("Please provide the number of likes of the post: ");
+                        System.out.print("Please provide the number of Shares of the post: ");
                         int promptedShares = input.nextInt();
-//                        newPost.setShares(promptedShares);
+                        if (promptedShares < 0){
+                            System.out.println("the prompted number is less than 0 and adding the post has been aborted.");
+                            break;
+                        }
 
-                        System.out.print("Please provide the number of shares of the post: ");
+                        System.out.print("Please provide the number of Likes of the post: ");
                         int promptedLikes = input.nextInt();
-//                        newPost.setLikes(promptedLikes);
+                        if (promptedShares < 0){
+                            System.out.println("the prompted number is less than 0 and adding the post has been aborted.");
+                            break;
+                        }
 
                         // TODO: Ask the lecturer more of how to use it.
                         //       Also, finish it by the end of this week.
                         System.out.println("Please provide the date and time of the post in the format of DD/MM/YYYY HH:MM:");
-                        newPost.setDateTime(LocalDateTime.now());
-
-
+                        input.nextLine();
+                        String date = input.nextLine();
+                        TimeValidator timeValidator = new TimeValidator(date);
+                        if (!timeValidator.isValidDate(date)){
+                            break;
+                        }
 
                         newPost.setId(promptedId);
                         newPost.setAuthor(promptedAuthor);
                         newPost.setContent(promptedContent);
                         newPost.setShares(promptedShares);
                         newPost.setLikes(promptedLikes);
-                        newPost.setDateTime(LocalDateTime.now());
+                        newPost.setDateTime(date);
                         postsList.add(newPost);
 
                         System.out.println("The post has been added to the collection!");
@@ -127,13 +131,12 @@ public class Main {
 
                     //  4) Retrieve the top N posts with most likes
                     case 4:
-
                         postsList.sort(Comparator.comparingInt(Posts::getLikes).reversed());
                         for (int i = 0; i < postsList.size(); i++){
                             System.out.printf("%d)  %d  |  %s  |  %d\n",
                                     i+1,
                                     postsList.get(i).id,
-                                    postsList.get(i).getContent(),
+                                    postsList.get(i).getDateTime(),
                                     postsList.get(i).getLikes());
                         }
 

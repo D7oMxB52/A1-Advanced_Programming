@@ -6,7 +6,7 @@ public class Posts {
     String author;
     int likes;
     int shares;
-    LocalDateTime dateTime;
+    String dateTime;
 
     public Posts() {
     }
@@ -23,7 +23,7 @@ public class Posts {
                 '}';
     }
 
-    public Posts(int id, String content, String author, int likes, int shares, LocalDateTime dateTime) {
+    public Posts(int id, String content, String author, int likes, int shares, String dateTime) {
         this.id = id;
         this.content = content;
         this.author = author;
@@ -73,11 +73,11 @@ public class Posts {
         this.shares = shares;
     }
 
-    public LocalDateTime getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 
