@@ -15,7 +15,6 @@ public class TimeValidator {
             LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
             return true;
         } catch (DateTimeException e) {
-            System.out.println("wrong input of time");
             return false;
         }
 

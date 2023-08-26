@@ -1,14 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+public class MainMenu {
 
-public class Main {
-    public static void main(String[] args) {
-
+    public void mainMenu(){
         String csvFile = "posts.csv";
         String line = "";
         String delimiter = ",";
@@ -30,8 +28,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
         System.out.println("Welcome to Social Media Analyzer!");
         do {
@@ -63,6 +59,7 @@ public class Main {
 
 
                         System.out.print("Please provide the post content: ");
+
                         String promptedContent = input.next();
                         if (promptedContent.contains(",")){
                             System.out.println("the content contain \" , \" and adding the post has been aborted.");
@@ -70,6 +67,7 @@ public class Main {
                         }
 
                         System.out.print("Please provide the number of Shares of the post: ");
+
                         int promptedShares = input.nextInt();
                         if (promptedShares < 0){
                             System.out.println("the prompted number is less than 0 and adding the post has been aborted.");
@@ -83,13 +81,12 @@ public class Main {
                             break;
                         }
 
-                        // TODO: Ask the lecturer more of how to use it.
-                        //       Also, finish it by the end of this week.
                         System.out.println("Please provide the date and time of the post in the format of DD/MM/YYYY HH:MM:");
                         input.nextLine();
                         String date = input.nextLine();
                         TimeValidator timeValidator = new TimeValidator(date);
                         if (!timeValidator.isValidDate(date)){
+                            System.out.println("wrong input of time");
                             break;
                         }
 
@@ -112,7 +109,7 @@ public class Main {
                         int numIdForDelete = input.nextInt();
 
                         Delete deleteById = new Delete(numIdForDelete, postsList);
-                        deleteById.deleteById();
+                        System.out.println(deleteById.deleteById());
 
                         break;
 
@@ -124,7 +121,7 @@ public class Main {
                         int numIdForSearch = input.nextInt();
 
                         Search searchById = new Search(numIdForSearch , postsList);
-                        searchById.searchById();
+                        System.out.println(searchById.searchById());
 
                         break;
 
@@ -158,7 +155,7 @@ public class Main {
 
                     //  6) Exit
                     case 6:
-                        System.out.println("exit");
+                        System.out.println("Thanks for using Social Media Analyzer!");
                         exit = true;
                         break;
                     default:
@@ -174,8 +171,6 @@ public class Main {
             }
 
         } while (!exit);
-
-
-
     }
+
 }

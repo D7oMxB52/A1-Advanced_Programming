@@ -8,14 +8,15 @@ public class Search {
         this.postsList = postsList;
     }
 
-    public void searchById(){
-
+    public String searchById(){
+        String found = null;
         Optional<Posts> searchById = postsList.stream().filter(post -> post.getId() == numId).findFirst();
         if (searchById.isPresent()) {
-            System.out.printf("%d  |  %s  |  %d\n",searchById.get().id,searchById.get().content,searchById.get().likes);
+            found = searchById.get().id+"  |  "+searchById.get().content+"  |  "+searchById.get().likes;
         } else {
-            System.out.println("Sorry the post does not exist in the collection! ");
+            found = "Sorry the post does not exist in the collection!";
         }
+        return found;
 
     }
 
